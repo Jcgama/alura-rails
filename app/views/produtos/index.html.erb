@@ -14,6 +14,9 @@
             <td><%= produto.descricao %></%></td>
             <td><%= produto.preco %></%></td>
             <td><%= produto.quantidade %></%></td>
+            <td><%= button_to 'Deletar', produto, method: :delete,
+                                        class: "btn btn-danger", data: { confirm: "Deletar #{produto.nome}?" } %>
+            </td>
         </tr>
         <% end %>
     </tbody>
@@ -38,3 +41,5 @@
         <% end %>
     </tbody>
 </table>
+
+<%= link_to 'Crie um novo produto', new_produto_path %>
