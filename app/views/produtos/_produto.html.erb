@@ -5,4 +5,7 @@
         <td><%= button_to 'Deletar', produto, method: :delete,
                                     class: "btn btn-danger", data: { confirm: "Deletar #{produto.nome}?" } %>
         </td>
+        <td>
+            <%= link_to 'Atualizar', edit_produto_path(produto), class: "btn btn-primary"  %>
+        </td>
     </tr>

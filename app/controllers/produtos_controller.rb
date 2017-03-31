@@ -1,25 +1,22 @@
 class ProdutosController < ApplicationController
   # Para as actions listadas no only: chamar set_produto, que instancia um objeto do Model Produto com o id
-  before_action :set_produto, only: [:destroy]
-  before_action :set_departamentos, only:[:create]
+  before_action :set_produto, only: [:destroy,:edit,:update]
   
   def index
     @produtos_por_nome = Produto.order(:nome).limit 9
-    @produtos_por_preco = Produto.order(:preco).limit 2
   end
   
   def new
     @produto = Produto.new
-    @departamentos = Departamento.all
+    renderiza(:new)
   end
   
   def create
     @produto = Produto.new produto_params
     if @produto.save
-      flash[:notice] = "Produto criado com sucesso"
-      redirect_to root_path  
+      sucesso("Produto criado com sucesso")  
     else
-      render :new
+      renderiza(:new)
     end
     
   end
@@ -32,21 +29,44 @@ class ProdutosController < ApplicationController
   def destroy
     # @produto foi setado na before_action
     @produto.destroy
-    flash[:notice] = "Produto deletado com sucesso."
-    redirect_to root_path
+    mensagem = "Produto deletado com sucesso."
+    sucesso(mensagem)
   end
   
+  def edit
+    renderiza(:edit)
+  end
+  
+  def update
+    if @produto.update(produto_params)
+      sucesso("Produto atualizado com sucesso!")
+    else
+      renderiza(:edit)
+    end
+  end
+  
+  
+  private
+  
+  # Instancia o produto pelo id
   def set_produto
     @produto = Produto.find(params[:id])
   end
-  
-  def set_departamentos
+  # Popula o array de depto e chama a view
+  def renderiza(view)
     @departamentos = Departamento.all
+    render view
   end
   
   # Nunca confie em parâmetros da assustadora internet. Aqui vão os permitidos.
   def produto_params
     params.require(:produto).permit(:nome,:descricao,:quantidade,:preco, :departamento_id)
+  end
+  
+  # recebe uma string para exibir como mensagem e redireciona para root
+  def sucesso(mensagem)
+    flash[:notice] = mensagem
+    redirect_to root_path
   end
   
 end
