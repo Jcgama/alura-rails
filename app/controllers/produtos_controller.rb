@@ -12,8 +12,14 @@ class ProdutosController < ApplicationController
   end
   
   def create
-    @produto = Produto.create produto_params
-    redirect_to root_path
+    @produto = Produto.new produto_params
+    if @produto.save
+      flash[:notice] = "Produto criado com sucesso"
+      redirect_to root_path  
+    else
+      render :new
+    end
+    
   end
   
   def busca
@@ -24,6 +30,7 @@ class ProdutosController < ApplicationController
   def destroy
     # @produto foi setado na before_action
     @produto.destroy
+    flash[:notice] = "Produto deletado com sucesso."
     redirect_to root_path
   end
   
