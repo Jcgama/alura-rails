@@ -1,6 +1,7 @@
 class ProdutosController < ApplicationController
   # Para as actions listadas no only: chamar set_produto, que instancia um objeto do Model Produto com o id
   before_action :set_produto, only: [:destroy]
+  before_action :set_departamentos, only:[:create]
   
   def index
     @produtos_por_nome = Produto.order(:nome).limit 9
@@ -9,6 +10,7 @@ class ProdutosController < ApplicationController
   
   def new
     @produto = Produto.new
+    @departamentos = Departamento.all
   end
   
   def create
@@ -38,9 +40,13 @@ class ProdutosController < ApplicationController
     @produto = Produto.find(params[:id])
   end
   
+  def set_departamentos
+    @departamentos = Departamento.all
+  end
+  
   # Nunca confie em parâmetros da assustadora internet. Aqui vão os permitidos.
   def produto_params
-    params.require(:produto).permit(:nome,:descricao,:quantidade,:preco)
+    params.require(:produto).permit(:nome,:descricao,:quantidade,:preco, :departamento_id)
   end
   
 end
