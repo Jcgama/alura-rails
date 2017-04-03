@@ -29,8 +29,7 @@ class ProdutosController < ApplicationController
   def destroy
     # @produto foi setado na before_action
     @produto.destroy
-    mensagem = "Produto deletado com sucesso."
-    sucesso(mensagem)
+    sucesso("Produto deletado com sucesso.")
   end
   
   def edit
